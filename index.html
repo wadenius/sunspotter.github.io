@@ -4,8 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-  <title>SunMap – Hitta uteserveringar i solen</title>
-  <meta name="description" content="SunMap – Hitta uteserveringar i solen just nu. Rapportera sol/skugga, följ vänner och upptäck bästa platsen i solen." />
+  <title>SunMap – Hitta Stockholms soligaste uteserveringar i realtid</title>
+  <meta name="description" content="SunMap – Hitta uteserveringar i solen just nu. Rapportera sol/skugga, följ vänner och upptäck bästa platsen i solen i Stockholm." />
   <meta name="theme-color" content="#0b1020" />
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -119,22 +119,15 @@
     .brand {
       display: flex;
       align-items: center;
-      gap: 12px;
-      font-weight: 800;
-      font-size: 1.2rem;
       text-decoration: none;
-      color: var(--text);
     }
 
-    .brand-logo {
-      width: 32px;
-      height: 32px;
-      border-radius: 8px;
-      background: conic-gradient(from 180deg, #ffb21c, #ffcc66, #22d3ee, #ffb21c);
-      animation: spin 8s linear infinite;
+    /* DEN NYA LOGOTYPSSTILEN */
+    .brand-logo-img {
+      height: 36px;
+      width: auto;
+      display: block;
     }
-    
-    @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
     /* Buttons */
     .btn {
@@ -202,22 +195,6 @@
       padding: 32px;
       border-radius: var(--radius-xl);
       box-shadow: var(--shadow-1);
-    }
-
-    /* Mock / Map Illustration */
-    .mock {
-      aspect-ratio: 1/1;
-      background: 
-        radial-gradient(circle at 30% 40%, rgba(255,178,28,0.4) 0%, transparent 50%),
-        radial-gradient(circle at 70% 60%, rgba(34,211,238,0.3) 0%, transparent 50%),
-        var(--bg-elev);
-      border-radius: var(--radius-xl);
-      border: 1px solid var(--card-border);
-      position: relative;
-      overflow: hidden;
-      box-shadow: var(--shadow-1);
-      background-image: radial-gradient(rgba(255,255,255,0.05) 1px, transparent 1px);
-      background-size: 30px 30px;
     }
 
     /* Grid & Cards */
@@ -309,7 +286,6 @@
     @media (max-width: 968px) {
       .hero { grid-template-columns: 1fr; text-align: center; padding-top: 40px; }
       .hero-card { padding: 24px; }
-      .mock { display: none; }
       .nav-actions .btn { display: none; } /* Gömmer knappen i nav för mobiler för renare look */
     }
   </style>
@@ -321,8 +297,7 @@
   <header class="site">
     <nav class="nav">
       <a class="brand" href="#">
-        <div class="brand-logo" aria-hidden="true"></div>
-        <span>SunMap</span>
+        <img src="sunmap-logo.svg" alt="SunMap – Hitta Stockholms soligaste uteserveringar i realtid" class="brand-logo-img">
       </a>
       <div class="nav-actions">
         <button id="themeToggle" class="btn" style="padding: 10px;" aria-label="Byt tema">🌙</button>
@@ -351,11 +326,6 @@
             <button class="copy-btn" onclick="copyCode()" title="Kopiera">📋</button>
           </div>
         </div>
-      </div>
-      
-      <div class="mock">
-        <div style="position: absolute; top: 40%; left: 35%; width: 20px; height: 20px; background: var(--accent); border-radius: 50%; box-shadow: 0 0 20px var(--accent); animation: pulse 2s infinite;"></div>
-        <div style="position: absolute; top: 60%; left: 70%; width: 15px; height: 15px; background: var(--accent-2); border-radius: 50%; box-shadow: 0 0 15px var(--accent-2);"></div>
       </div>
     </section>
 
@@ -413,17 +383,6 @@
       navigator.clipboard.writeText(code);
       alert('API-kommandot kopierat!');
     }
-
-    // Enkel animation för "kartan"
-    const style = document.createElement('style');
-    style.textContent = `
-      @keyframes pulse {
-        0% { transform: scale(1); opacity: 1; }
-        50% { transform: scale(1.5); opacity: 0.5; }
-        100% { transform: scale(1); opacity: 1; }
-      }
-    `;
-    document.head.append(style);
   </script>
 </body>
 </html>
