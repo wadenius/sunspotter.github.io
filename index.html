@@ -122,7 +122,7 @@
       text-decoration: none;
     }
 
-    /* DEN NYA LOGOTYPSSTILEN */
+    /* Logotypsstilen */
     .brand-logo-img {
       height: 36px;
       width: auto;
@@ -237,29 +237,49 @@
       font-weight: 800;
     }
 
-    /* API/Code block */
+    /* API/Code block (Gömd nu, men kan återaktiveras) */
     .code-box {
+      display: none; /* Döljer API-boxen */
       background: #000;
       color: #adbac7;
       padding: 12px 16px;
       border-radius: 12px;
       font-family: 'JetBrains Mono', monospace;
       font-size: 13px;
-      display: flex;
       justify-content: space-between;
       align-items: center;
       margin-top: 20px;
       border: 1px solid #30363d;
     }
 
-    .copy-btn {
-      background: none;
-      border: none;
-      color: var(--muted);
-      cursor: pointer;
-      padding: 4px;
+    /* Checklist för ägare */
+    .owner-checklist {
+      list-style: none;
+      padding: 0;
+      margin: 0;
     }
-    .copy-btn:hover { color: #fff; }
+
+    .owner-checklist li {
+      display: flex;
+      align-items: flex-start;
+      gap: 15px;
+      margin-bottom: 15px;
+    }
+
+    .owner-checklist li::before {
+      content: '✓';
+      display: inline-grid;
+      place-items: center;
+      width: 28px;
+      height: 28px;
+      background: var(--accent);
+      color: #000;
+      border-radius: 50%;
+      font-weight: 800;
+      font-size: 18px;
+      flex-shrink: 0;
+      margin-top: 3px;
+    }
 
     /* Forms */
     input[type="email"] {
@@ -342,10 +362,36 @@
           <h3 style="margin: 0 0 10px 0;">Hitta polarna</h3>
           <p style="color: var(--muted); margin: 0;">Se vilka uteserveringar dina vänner har checkat in på just nu.</p>
         </div>
-        <div class="card">
-          <div style="font-size: 2rem; margin-bottom: 10px;">📈</div>
-          <h3 style="margin: 0 0 10px 0;">API för Utvecklare</h3>
-          <p style="color: var(--muted); margin: 0;">Bygg egna appar eller integrationer med vårt öppna och snabba API.</p>
+        <div class="card" style="grid-column: 1 / -1;">
+          <div style="font-size: 2rem; margin-bottom: 10px;">💼</div>
+          <h3 style="margin: 0 0 10px 0;">För Restaurangägare</h3>
+          <p style="color: var(--muted); margin: 0 0 20px 0;">Anslut er till SunMap och nå ut till tusentals soltörstiga gäster.</p>
+          <ul class="owner-checklist">
+            <li>
+              <div>
+                <strong>Registrera er uteservering</strong>
+                <span style="display: block; color: var(--muted); font-size: 14px;">Bli synlig på kartan och gör det enkelt för gäster att hitta er.</span>
+              </div>
+            </li>
+            <li>
+              <div>
+                <strong>Specificera era soltimmar</strong>
+                <span style="display: block; color: var(--muted); font-size: 14px;">Låt gästerna veta exakt när ni har bäst solläge på dagen.</span>
+              </div>
+            </li>
+            <li>
+              <div>
+                <strong>Driv trafik till er uteservering</strong>
+                <span style="display: block; color: var(--muted); font-size: 14px;">SunMap fyller era platser genom att visa upp er när solen skiner som mest.</span>
+              </div>
+            </li>
+            <li>
+              <div>
+                <strong>Maximera exponeringen</strong>
+                <span style="display: block; color: var(--muted); font-size: 14px;">Välj sponsrad listning för att sticka ut och attrahera ännu fler besökare.</span>
+              </div>
+            </li>
+          </ul>
         </div>
       </div>
     </section>
@@ -376,13 +422,6 @@
       document.body.classList.toggle('light');
       btn.textContent = document.body.classList.contains('light') ? '☀️' : '🌙';
     });
-
-    // Copy function
-    function copyCode() {
-      const code = document.getElementById('apiCode').innerText;
-      navigator.clipboard.writeText(code);
-      alert('API-kommandot kopierat!');
-    }
   </script>
 </body>
 </html>
