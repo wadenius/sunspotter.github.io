@@ -1,123 +1,460 @@
 <!DOCTYPE html>
 <html lang="sv">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-<title>Sun Spotter</title>
+  <title>SunMap – Hitta uteserveringar i solen</title>
+  <meta name="description" content="SunMap – Hitta uteserveringar i solen just nu. Rapportera sol/skugga, följ vänner och upptäck bästa platsen i solen." />
+  <meta name="theme-color" content="#0b1020" />
 
-<style>
-body{
-font-family: Arial, sans-serif;
-margin:0;
-background:#f6f1e6;
-color:#333;
-text-align:center;
-}
+  <!-- Open Graph (för snygga länkar i sociala medier) -->
+  <meta property="og:title" content="SunMap – Hitta uteserveringar i solen" />
+  <meta property="og:description" content="Rapportera sol/skugga och upptäck bästa platsen i solen – i realtid." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://sunmap.se" />
+  <meta property="og:image" content="https://sunmap.se/og-image.png" />
 
-header{
-background:#ffb21c;
-padding:60px 20px;
-color:white;
-}
+  <!-- Modern, teknisk typografi -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
 
-h1{
-font-size:48px;
-margin:0;
-}
+  <style>
+    :root {
+      --bg: #0b1020;              /* djup, mörk blåsvart */
+      --bg-elev: #12172a;         /* lite högre nivå */
+      --text: #dbe2ff;
+      --muted: #9aa4c7;
+      --card: rgba(17, 25, 40, 0.65);
+      --card-border: rgba(255, 255, 255, 0.08);
+      --accent: #ffb21c;          /* sol/amber */
+      --accent-2: #22d3ee;        /* cyan */
+      --cta: #ff9800;             /* knappfärg (amber djupare) */
 
-.tagline{
-font-size:20px;
-margin-top:10px;
-}
+      --radius-xl: 18px;
+      --radius-md: 12px;
+      --shadow-1: 0 10px 30px rgba(0, 0, 0, 0.35);
+      --shadow-glow: 0 0 40px rgba(255, 178, 28, 0.25);
+    }
 
-.container{
-max-width:900px;
-margin:auto;
-padding:40px 20px;
-}
+    /* Light mode vars (aktiveras via .light på body) */
+    body.light {
+      --bg: #f6f7fb;
+      --bg-elev: #ffffff;
+      --text: #0b1020;
+      --muted: #5b6277;
+      --card: rgba(255, 255, 255, 0.7);
+      --card-border: rgba(10, 20, 40, 0.08);
+      --cta: #ff9800;
+    }
 
-.feature{
-background:white;
-padding:25px;
-margin:20px 0;
-border-radius:12px;
-box-shadow:0 6px 14px rgba(0,0,0,0.08);
-}
+    * { box-sizing: border-box; }
+    html, body {
+      height: 100%;
+      scroll-behavior: smooth;
+    }
 
-.feature h2{
-margin-top:0;
-}
+    body {
+      margin: 0;
+      font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+      color: var(--text);
+      background: radial-gradient(1200px 1200px at 15% -10%, rgba(255, 178, 28, 0.08), transparent 60%),
+                  radial-gradient(1000px 800px at 85% 10%, rgba(34, 211, 238, 0.10), transparent 60%),
+                  var(--bg);
+      line-height: 1.6;
+    }
 
-footer{
-margin-top:40px;
-padding:20px;
-background:#eee;
-font-size:14px;
-}
+    /* Dekorativ, subtil rörlig gradient bakom innehållet */
+    .bg-aurora {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      background:
+        radial-gradient(600px 400px at 20% 30%, rgba(255, 178, 28, 0.12), transparent 60%),
+        radial-gradient(500px 500px at 80% 20%, rgba(34, 211, 238, 0.12), transparent 60%);
+      animation: float 14s ease-in-out infinite alternate;
+      filter: blur(20px) saturate(1.15);
+      opacity: 0.8;
+    }
+    @keyframes float {
+      from { transform: translateY(-6px) translateX(-8px) scale(1); }
+      to   { transform: translateY(8px) translateX(6px) scale(1.02); }
+    }
 
-.button{
-display:inline-block;
-background:#ff9800;
-color:white;
-padding:14px 28px;
-border-radius:30px;
-text-decoration:none;
-font-weight:bold;
-margin-top:20px;
-}
-</style>
+    header.site {
+      position: sticky;
+      top: 0;
+      backdrop-filter: saturate(140%) blur(8px);
+      -webkit-backdrop-filter: saturate(140%) blur(8px);
+      background: linear-gradient(to bottom, rgba(11,16,32,0.85), rgba(11,16,32,0.55));
+      border-bottom: 1px solid var(--card-border);
+      z-index: 10;
+    }
+    .nav {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 14px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-weight: 700;
+      letter-spacing: 0.2px;
+      text-decoration: none;
+      color: var(--text);
+    }
+    .brand-logo {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      background:
+        conic-gradient(from 210deg at 50% 50%, #ffb21c, #ffcc66, #22d3ee, #0ea5e9, #ffb21c);
+      box-shadow: inset 0 0 10px rgba(0,0,0,0.2), var(--shadow-glow);
+    }
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 18px;
+      border-radius: 999px;
+      text-decoration: none;
+      font-weight: 600;
+      border: 1px solid var(--card-border);
+      color: var(--text);
+      background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.01));
+      transition: transform .15s ease, box-shadow .2s ease, border-color .2s ease;
+    }
+    .btn:hover { transform: translateY(-1px); border-color: rgba(255,255,255,0.16); box-shadow: var(--shadow-1); }
+    .btn-primary {
+      background: linear-gradient(135deg, var(--cta), #ffb21c);
+      color: #121212;
+      border: none;
+      box-shadow: 0 10px 20px rgba(255, 152, 0, 0.25);
+    }
+    .btn-primary:hover { box-shadow: 0 12px 26px rgba(255, 152, 0, 0.32); }
+
+    .theme-toggle {
+      cursor: pointer;
+      width: 42px;
+      height: 42px;
+      border-radius: 999px;
+      display: grid;
+      place-items: center;
+      border: 1px solid var(--card-border);
+      background: linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.01));
+      color: var(--text);
+    }
+
+    .hero {
+      position: relative;
+      z-index: 1;
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 72px 20px 28px;
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 28px;
+      align-items: center;
+    }
+    .hero h1 {
+      font-size: clamp(34px, 6vw, 56px);
+      line-height: 1.05;
+      margin: 8px 0 14px;
+      letter-spacing: -0.4px;
+      text-shadow: 0 2px 0 rgba(0,0,0,0.2);
+    }
+    .gradient-text {
+      background: linear-gradient(90deg, #ffb21c 10%, #ffd27a 40%, #22d3ee 90%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+    }
+    .hero p {
+      color: var(--muted);
+      font-size: clamp(16px, 2.4vw, 18px);
+      margin: 0 0 18px;
+    }
+    .hero .cta-row {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 8px;
+    }
+    .hero-card {
+      border: 1px solid var(--card-border);
+      background: linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02));
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      padding: 22px;
+      border-radius: var(--radius-xl);
+      box-shadow: var(--shadow-1);
+    }
+    .mock {
+      aspect-ratio: 5 / 3;
+      border-radius: var(--radius-xl);
+      background:
+        linear-gradient(135deg, rgba(255, 178, 28, 0.14), rgba(34, 211, 238, 0.14)),
+        linear-gradient(180deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
+      border: 1px solid var(--card-border);
+      position: relative;
+      overflow: hidden;
+      box-shadow: var(--shadow-1), var(--shadow-glow);
+    }
+    /* simple “map” look inside mock */
+    .mock::before, .mock::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(12px 12px at 30% 55%, #ffb21c, transparent 60%),
+        radial-gradient(10px 10px at 68% 38%, #22d3ee, transparent 60%),
+        radial-gradient(10px 10px at 78% 70%, #ffd27a, transparent 60%),
+        linear-gradient(transparent 60%, rgba(0,0,0,0.15) 100%);
+      mix-blend-mode: screen;
+      opacity: 0.9;
+    }
+
+    .section {
+      position: relative;
+      z-index: 1;
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 28px 20px 64px;
+    }
+    .section h2 {
+      font-size: clamp(22px, 3.4vw, 28px);
+      margin: 0 0 18px;
+      letter-spacing: -0.2px;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 16px;
+    }
+    .card {
+      grid-column: span 4;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--card-border);
+      background: var(--card);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      padding: 18px 18px;
+      transition: transform .18s ease, box-shadow .2s ease, border-color .2s ease;
+    }
+    .card:hover { transform: translateY(-4px); box-shadow: var(--shadow-1); border-color: rgba(255,255,255,0.14); }
+    .card h3 { margin: 6px 0 8px; font-size: 18px; }
+    .card p { margin: 0; color: var(--muted); }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 12px;
+      color: #0b1020;
+      background: linear-gradient(135deg, #ffb21c, #ffd27a);
+      border-radius: 999px;
+      padding: 6px 10px;
+      font-weight: 700;
+      letter-spacing: 0.3px;
+    }
+
+    .mono {
+      font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      font-size: 12.5px;
+      color: #c8d3ff;
+      background: rgba(255,255,255,0.03);
+      padding: 8px 10px;
+      border-radius: 8px;
+      border: 1px dashed var(--card-border);
+      display: inline-block;
+      user-select: all;
+    }
+
+    footer.site {
+      border-top: 1px solid var(--card-border);
+      margin-top: 40px;
+      background: linear-gradient(to top, rgba(11,16,32,0.85), rgba(11,16,32,0.45));
+    }
+    .footer-inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 26px 20px 40px;
+      color: var(--muted);
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+    }
+    .links {
+      display: flex;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+    .links a {
+      color: var(--muted);
+      text-decoration: none;
+      border-bottom: 1px dashed transparent;
+    }
+    .links a:hover { color: var(--text); border-bottom-color: var(--text); }
+
+    /* Responsivitet */
+    @media (max-width: 900px) {
+      .hero { grid-template-columns: 1fr; padding-top: 40px; }
+      .mock { order: -1; }
+      .card { grid-column: span 6; }
+    }
+    @media (max-width: 600px) {
+      .card { grid-column: span 12; }
+      .nav { padding: 12px 14px; }
+    }
+  </style>
 </head>
 
 <body>
+  <div class="bg-aurora" aria-hidden="true"></div>
 
-<header>
-<h1>☀️ Sun Spotter</h1>
-<p class="tagline">Hitta uteserveringar i solen</p>
-</header>
+  <header class="site">
+    <nav class="nav">
+      <a class="brand" href="#">
+        <div class="brand-logo" aria-hidden="true"></div>
+        <span>SunMap</span>
+      </a>
+      <div class="nav-actions">
+        <button id="themeToggle" class="theme-toggle" aria-label="Växla tema" title="Växla tema">
+          🌙
+        </button>
+        <a class="btn btn-primary" href="#cta">Få tidig access</a>
+      </div>
+    </nav>
+  </header>
 
-<div class="container">
+  <main>
+    <!-- HERO -->
+    <section class="hero">
+      <div class="hero-card">
+        <span class="badge">NYTT • BETA</span>
+        <h1><span class="gradient-text">Hitta solen,</span> i realtid.</h1>
+        <p>
+          SunMap visar vilka uteserveringar som har <strong>sol</strong> just nu.
+          Rapportera sol/skugga, följ vänner och hitta rätt plats – direkt.
+        </p>
+        <div class="cta-row">
+          <a class="btn btn-primary" href="#cta">Gå med i väntelistan</a>
+          <a class="btn" href="#how">Så funkar det</a>
+        </div>
+        <div style="margin-top:14px;">
+          <span class="mono">curl https://api.sunmap.se/sol?lat=59.33&lon=18.07</span>
+        </div>
+      </div>
 
-<div class="feature">
-<h2>Vad är Sun Spotter?</h2>
-<p>
-Sun Spotter hjälper dig hitta uteserveringar där solen skiner just nu.
-Användare kan rapportera om ett ställe har sol eller skugga så att
-andra snabbt kan hitta den bästa platsen att sitta ute.
-</p>
-</div>
+      <div class="mock" role="img" aria-label="Illustration av karta med soliga punkter"></div>
+    </section>
 
-<div class="feature">
-<h2>☀️ Rapportera sol eller skugga</h2>
-<p>
-När du sitter på en uteservering kan du lägga upp om det är
-soligt eller skuggigt. Informationen visas direkt för andra användare.
-</p>
-</div>
+    <!-- FEATURES -->
+    <section class="section" id="how">
+      <h2>Varför <span class="gradient-text">SunMap</span>?</h2>
+      <div class="grid">
+        <article class="card">
+          <h3>☀️ Realtidsrapportering</h3>
+          <p>Användare rapporterar sol/skugga – uppdateras direkt på kartan.</p>
+        </article>
+        <article class="card">
+          <h3>🧭 Solsmart navigation</h3>
+          <p>Filtrera på solstatus, tid på dygnet och orientering mot solen.</p>
+        </article>
+        <article class="card">
+          <h3>👥 Vänner & möten</h3>
+          <p>Se var kompisarna sitter och join:a på två minuter.</p>
+        </article>
+        <article class="card">
+          <h3>⚡ Snabb & lätt</h3>
+          <p>Minimal laddtid, optimerat för både mobil och desktop.</p>
+        </article>
+        <article class="card">
+          <h3>🔒 Integritet</h3>
+          <p>Platser anonymiseras och raderas automatiskt efter kort tid.</p>
+        </article>
+        <article class="card">
+          <h3>🧩 API‑redo</h3>
+          <p>Publikt API för partners (t.ex. uteserveringar, guider och kartor).</p>
+        </article>
+      </div>
+    </section>
 
-<div class="feature">
-<h2>👥 Lägg till vänner</h2>
-<p>
-Följ dina vänner och se vilken uteservering de sitter på just nu.
-Perfekt när man vill mötas upp spontant i solen.
-</p>
-</div>
+    <!-- CTA -->
+    <section class="section" id="cta">
+      <h2>Bli först med att testa</h2>
+      <p style="color:var(--muted); margin-top:-6px;">
+        Skriv upp dig så hör vi av oss när betan släpps.
+      </p>
+      <div class="hero-card" style="margin-top:14px;">
+        <form onsubmit="event.preventDefault(); alert('Tack! Vi hör av oss snart.');">
+          <div style="display:flex; gap:10px; flex-wrap:wrap;">
+            <input
+              type="email"
+              required
+              placeholder="din@epost.se"
+              aria-label="E-post"
+              style="
+                flex:1 1 260px;
+                padding:14px 16px;
+                border-radius:999px;
+                border:1px solid var(--card-border);
+                background:rgba(255,255,255,0.06);
+                color:var(--text);
+                outline:none;
+              "
+            />
+            <button class="btn btn-primary" type="submit">Gå med</button>
+          </div>
+        </form>
+      </div>
+    </section>
+  </main>
 
-<div class="feature">
-<h2>📍 Hitta bästa platsen</h2>
-<p>
-Se vilka uteserveringar nära dig som har sol just nu
-och vilka som ligger i skugga.
-</p>
-</div>
+  <footer class="site">
+    <div class="footer-inner">
+      <div>© <span id="year"></span> SunMap</div>
+      <div class="links">
+        <a href="#how">Funktioner</a>
+        <a href="#cta">Väntelista</a>
+        <a href="#" aria-disabled="true">Integritet</a>
+      </div>
+    </div>
+  </footer>
 
-<a class="button" href="#">Ladda ner appen (kommer snart)</a>
+  <script>
+    // Sätt år i footern
+    document.getElementById('year').textContent = new Date().getFullYear();
 
-</div>
+    // Light/Dark toggle med lagring
+    const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+    const saved = localStorage.getItem('sunmap-theme');
+    if (saved === 'light') document.body.classList.add('light');
+    if (saved === 'dark') document.body.classList.remove('light');
+    if (!saved && !prefersDark) document.body.classList.add('light');
 
-<footer>
-Sun Spotter © 2026
-</footer>
-
+    const btn = document.getElementById('themeToggle');
+    const setIcon = () => btn.textContent = document.body.classList.contains('light') ? '☀️' : '🌙';
+    setIcon();
+    btn.addEventListener('click', () => {
+      document.body.classList.toggle('light');
+      localStorage.setItem('sunmap-theme', document.body.classList.contains('light') ? 'light' : 'dark');
+      setIcon();
+    });
+  </script>
 </body>
 </html>
+
