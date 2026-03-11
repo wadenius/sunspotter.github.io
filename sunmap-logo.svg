@@ -1,0 +1,29 @@
+<svg width="250" height="70" viewBox="0 0 250 70" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <g id="icon" transform="translate(10, 5)">
+    <path id="pin" d="M30 0C13.4315 0 0 13.4315 0 30C0 41.5305 6.47161 51.5273 16 56.6372V65C16 67.7614 18.2386 70 21 70H39C41.7614 70 44 67.7614 44 65V56.6372C53.5284 51.5273 60 41.5305 60 30C60 13.4315 46.5685 0 30 0Z" fill="#FFB21C"/>
+    
+    <circle id="sun-core" cx="30" cy="30" r="22" fill="#FF9800"/>
+    
+    <circle id="eye-left" cx="22" cy="27" r="2.5" fill="black"/>
+    <circle id="eye-right" cx="38" cy="27" r="2.5" fill="black"/>
+    <path id="mouth" d="M22 36C22 36 24 41 30 41C36 41 38 36 38 36" stroke="black" stroke-width="2.5" stroke-linecap="round"/>
+
+    <circle id="top-pin" cx="30" cy="8" r="4.5" fill="#EF4444"/>
+    
+    <g id="map-dots" transform="translate(10, 55)">
+      <circle cx="2" cy="2" r="1.5" fill="#C4C4C4" fill-opacity="0.3"/>
+      <circle cx="10" cy="2" r="1.5" fill="#C4C4C4" fill-opacity="0.3"/>
+      <circle cx="18" cy="2" r="1.5" fill="#C4C4C4" fill-opacity="0.3"/>
+      <circle cx="2" cy="10" r="1.5" fill="#C4C4C4" fill-opacity="0.3"/>
+      <circle cx="10" cy="10" r="1.5" fill="#C4C4C4" fill-opacity="0.3"/>
+      <circle cx="18" cy="10" r="1.5" fill="#C4C4C4" fill-opacity="0.3"/>
+    </g>
+  </g>
+
+  <g id="text" transform="translate(85, 45)">
+    <text font-family="'Inter', sans-serif" font-size="34" font-weight="700" letter-spacing="-0.03em">
+      <tspan fill="#FF9800">Sun</tspan>
+      <tspan fill="#0F172A">Map</tspan>
+    </text>
+  </g>
+</svg>
