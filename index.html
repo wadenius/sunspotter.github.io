@@ -84,10 +84,13 @@
       border-bottom: 1px solid var(--card-border);
       z-index: 10;
     }
+    
+    body.light header.site { background: rgba(255, 255, 255, 0.7); }
+
     .nav {
       max-width: 1100px;
       margin: 0 auto;
-      padding: 14px 20px;
+      padding: 16px 20px;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -108,7 +111,7 @@
       background: conic-gradient(from 180deg, #ffb21c, #ffcc66, #22d3ee, #ffb21c);
     }
 
-    /* HÄR ÄR CSS-FIXEN FÖR LOGGAN */
+    /* FIX FÖR MÖRKERLÄGET I LOGGAN */
     /* I mörkerläge (default) */
     .brand-logo-img {
       color: var(--cta); /* 'Sun' är orange */
@@ -207,6 +210,35 @@
       box-shadow: var(--shadow-1);
     }
 
+    /* Checklist för ägare */
+    .owner-checklist {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .owner-checklist li {
+      display: flex;
+      align-items: flex-start;
+      gap: 15px;
+      margin-bottom: 15px;
+    }
+
+    .owner-checklist li::before {
+      content: '✓';
+      display: inline-grid;
+      place-items: center;
+      width: 28px;
+      height: 28px;
+      background: var(--accent);
+      color: #000;
+      border-radius: 50%;
+      font-weight: 800;
+      font-size: 18px;
+      flex-shrink: 0;
+      margin-top: 3px;
+    }
+
     @media (max-width: 900px) {
       .hero { grid-template-columns: 1fr; padding-top: 40px; }
       .nav-actions .btn { display: none; } /* Renare nav i mobil */
@@ -246,19 +278,53 @@
     </section>
 
     <section class="section" id="how" style="max-width: 1100px; margin: 0 auto; padding: 40px 20px;">
-      <h2 style="text-align: center; margin-bottom: 30px;">Varför SunMap?</h2>
+      <h2 style="text-align: center; margin-bottom: 40px;">Varför SunMap?</h2>
       <div class="grid">
         <div class="card">
-          <h3>☀️ Live Sol-status</h3>
+          <div style="font-size: 2rem; margin-bottom: 10px;">☀️</div>
+          <h3>Live Sol-status</h3>
           <p style="color: var(--muted); margin: 0;">Användare rapporterar sol/skugga och kartan uppdateras direkt.</p>
         </div>
         <div class="card">
-          <h3>🧭 Solsmart filtrering</h3>
+          <div style="font-size: 2rem; margin-bottom: 10px;">🧭</div>
+          <h3>Solsmart filtrering</h3>
           <p style="color: var(--muted); margin: 0;">Filtrera på solläge, tid på dygnet och uteserveringens orientering.</p>
         </div>
         <div class="card">
-          <h3>🍻 Hitta vänner</h3>
+          <div style="font-size: 2rem; margin-bottom: 10px;">🍻</div>
+          <h3>Hitta polarna</h3>
           <p style="color: var(--muted); margin: 0;">Se var polarna sitter och anslut på två minuter.</p>
+        </div>
+        <div class="card" style="grid-column: 1 / -1; margin-top: 10px;">
+          <div style="font-size: 2rem; margin-bottom: 10px;">💼</div>
+          <h3 style="margin: 0 0 10px 0;">För Restaurangägare</h3>
+          <p style="color: var(--muted); margin: 0 0 20px 0;">Anslut er till SunMap och nå ut till tusentals soltörstiga gäster.</p>
+          <ul class="owner-checklist">
+            <li>
+              <div>
+                <strong>Registrera er uteservering</strong>
+                <span style="display: block; color: var(--muted); font-size: 14px;">Bli synlig på kartan och gör det enkelt för gäster att hitta er.</span>
+              </div>
+            </li>
+            <li>
+              <div>
+                <strong>Specificera era soltimmar</strong>
+                <span style="display: block; color: var(--muted); font-size: 14px;">Låt gästerna veta exakt när ni har bäst solläge på dagen.</span>
+              </div>
+            </li>
+            <li>
+              <div>
+                <strong>Driv trafik till er uteservering</strong>
+                <span style="display: block; color: var(--muted); font-size: 14px;">SunMap fyller era platser genom att visa upp er när solen skiner som mest.</span>
+              </div>
+            </li>
+            <li>
+              <div>
+                <strong>Maximera exponeringen</strong>
+                <span style="display: block; color: var(--muted); font-size: 14px;">Välj sponsrad listning för att sticka ut och attrahera ännu fler besökare.</span>
+              </div>
+            </li>
+          </ul>
         </div>
       </div>
     </section>
