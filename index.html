@@ -307,7 +307,7 @@
       <div class="nav-actions">
         <button id="themeToggle" class="btn" style="padding: 10px;" aria-label="Växla tema">🌙</button>
         
-        <a href="install.html" class="download-banner">
+        <a href="https://app.sunmap.se" class="download-banner">
           <div class="download-content">
             <div class="brand-logo" aria-hidden="true" style="width: 28px; height: 28px;"></div>
             <div class="download-text">
@@ -329,7 +329,7 @@
         <p>SunMap visar de soligaste uteserveringarna baserat på realtidsdata och användarrapporter. Sluta leta skugga – hitta din plats i solen idag.</p>
         <div class="hero-card">
           <div style="display: flex; gap: 12px; flex-wrap: wrap; justify-content: center;">
-            <a class="btn btn-primary" href="install.html">Ladda ner appen</a>
+            <a class="btn btn-primary" href="#cta">Gå med i väntelistan</a>
             <a class="btn" href="#how">Så funkar det</a>
           </div>
         </div>
@@ -388,7 +388,17 @@
       </div>
     </section>
 
-    </main>
+    <section class="section" id="cta" style="text-align: center; max-width: 1100px; margin: 0 auto; padding: 40px 20px;">
+      <div class="hero-card" style="max-width: 600px; margin: 0 auto;">
+        <h2>Bli först med att testa</h2>
+        <p style="color: var(--muted);">Skriv upp dig så hör vi av oss när betan släpps.</p>
+        <form onsubmit="event.preventDefault(); alert('Välkommen till väntelistan!');" style="display: flex; gap: 10px; margin-top: 20px; flex-wrap: wrap; justify-content: center;">
+          <input type="email" placeholder="din@epost.se" required style="flex: 1; padding: 12px 16px; border-radius: 999px; border: 1px solid var(--card-border); background: rgba(255,255,255,0.05); color: var(--text);">
+          <button class="btn btn-primary" type="submit">Gå med</button>
+        </form>
+      </div>
+    </section>
+  </main>
 
   <footer class="site" style="border-top: 1px solid var(--card-border); margin-top: 60px; padding: 30px 20px; text-align: center; color: var(--muted); font-size: 14px;">
     <p>© <span id="year"></span> SunMap Tech. Skapad för en soligare stad.</p>
