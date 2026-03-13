@@ -1,0 +1,15 @@
+{
+  "short_name": "SunMap",
+  "name": "SunMap – Hitta solen",
+  "icons": [
+    {
+      "src": "sunmap-logo.svg",
+      "type": "image/svg+xml",
+      "sizes": "512x512"
+    }
+  ],
+  "start_url": "/",
+  "background_color": "#0b1020",
+  "display": "standalone",
+  "theme_color": "#ff9800"
+}
