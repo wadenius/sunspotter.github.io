@@ -94,18 +94,37 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
+      gap: 20px;
     }
     .brand {
       display: flex;
       align-items: center;
+      gap: 12px;
+      font-weight: 800; /* Tyngre font för modernare känsla */
+      font-size: 1.1rem;
       text-decoration: none;
+      color: var(--text);
+    }
+    .brand-logo {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      background: conic-gradient(from 180deg, #ffb21c, #ffcc66, #22d3ee, #ffb21c);
     }
 
-    /* DEN NYA LOGOTYPSSTILEN */
+    /* FIX FÖR MÖRKERLÄGET I LOGGAN */
+    /* I mörkerläge (default) */
     .brand-logo-img {
-      height: 36px; /* Sätter höjden för att passa headern */
-      width: auto; /* Bevarar proportionerna */
-      display: block;
+      color: var(--cta); /* 'Sun' är orange */
+    }
+    
+    .logo-map {
+      color: var(--muted); /* 'Map' är dämpad/ljusgrå mot svart */
+    }
+
+    /* I ljusläge */
+    body.light .logo-map {
+      color: #333; /* 'Map' är mörkgrå mot vit bakgrund */
     }
 
     /* Buttons */
@@ -192,9 +211,86 @@
       box-shadow: var(--shadow-1);
     }
 
+    /* Checklist för ägare */
+    .owner-checklist {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .owner-checklist li {
+      display: flex;
+      align-items: flex-start;
+      gap: 15px;
+      margin-bottom: 15px;
+    }
+
+    .owner-checklist li::before {
+      content: '✓';
+      display: inline-grid;
+      place-items: center;
+      width: 28px;
+      height: 28px;
+      background: var(--accent);
+      color: #000;
+      border-radius: 50%;
+      font-weight: 800;
+      font-size: 18px;
+      flex-shrink: 0;
+      margin-top: 3px;
+    }
+
+    /* HÄR ÄR DE NYA STILARNA FÖR DEN SNYGGA RUTAN */
+    .download-banner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 15px;
+      padding: 12px 20px;
+      border: 1px solid var(--accent); /* Accent-färg på ramen */
+      background: var(--card);
+      border-radius: 999px; /* Helt rundad ruta */
+      text-decoration: none;
+      color: var(--text);
+      transition: all .2s ease;
+      cursor: pointer;
+    }
+    .download-banner:hover {
+      transform: translateY(-2px);
+      border-color: rgba(255, 178, 28, 0.4);
+      box-shadow: var(--shadow-glow);
+    }
+
+    .download-content {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .download-text {
+      display: flex;
+      flex-direction: column;
+    }
+    .download-text-main {
+      font-weight: 700;
+      font-size: 14px;
+      line-height: 1.2;
+    }
+    .download-text-sub {
+      color: var(--muted);
+      font-size: 11px;
+    }
+
+    .download-btn {
+      padding: 8px 15px;
+      font-size: 12px;
+    }
+
     @media (max-width: 900px) {
       .hero { grid-template-columns: 1fr; padding-top: 40px; }
-      .nav-actions .btn { display: none; } /* Renare nav i mobil */
+      .hero-card { padding: 24px; }
+      .nav-actions .btn { display: none; } /* Gömmer tema-knappen i mobil */
+      .nav-actions .download-banner { display: none; } /* Gömmer bannern i mobil för renare look */
     }
   </style>
 </head>
@@ -205,11 +301,22 @@
   <header class="site">
     <nav class="nav">
       <a class="brand" href="#">
-        <img src="sunmap-logo.svg" alt="SunMap – Hitta uteserveringar i solen" class="brand-logo-img">
+        <div class="brand-logo" aria-hidden="true"></div>
+        <span class="brand-logo-img">Sun <span class="logo-map">Map</span></span>
       </a>
       <div class="nav-actions">
         <button id="themeToggle" class="btn" style="padding: 10px;" aria-label="Växla tema">🌙</button>
-        <a class="btn btn-primary" href="#cta">Få tillgång</a>
+        
+        <a href="install.html" class="download-banner">
+          <div class="download-content">
+            <div class="brand-logo" aria-hidden="true" style="width: 28px; height: 28px;"></div>
+            <div class="download-text">
+              <strong class="download-text-main">Ladda ner SunMap</strong>
+              <span class="download-text-sub">Få snabba åtkomst till solen!</span>
+            </div>
+          </div>
+          <span class="btn btn-primary download-btn">Installera</span>
+        </a>
       </div>
     </nav>
   </header>
@@ -230,7 +337,7 @@
     </section>
 
     <section class="section" id="how" style="max-width: 1100px; margin: 0 auto; padding: 40px 20px;">
-      <h2 style="text-align: center; margin-bottom: 30px;">Varför SunMap?</h2>
+      <h2 style="text-align: center; margin-bottom: 40px;">Varför SunMap?</h2>
       <div class="grid">
         <div class="card">
           <div style="font-size: 2rem; margin-bottom: 10px;">☀️</div>
@@ -244,8 +351,39 @@
         </div>
         <div class="card">
           <div style="font-size: 2rem; margin-bottom: 10px;">🍻</div>
-          <h3>Hitta vänner</h3>
+          <h3>Hitta polarna</h3>
           <p style="color: var(--muted); margin: 0;">Se var polarna sitter och anslut på två minuter.</p>
+        </div>
+        <div class="card" style="grid-column: 1 / -1; margin-top: 10px;">
+          <div style="font-size: 2rem; margin-bottom: 10px;">💼</div>
+          <h3 style="margin: 0 0 10px 0;">För Restaurangägare</h3>
+          <p style="color: var(--muted); margin: 0 0 20px 0;">Anslut er till SunMap och nå ut till tusentals soltörstiga gäster.</p>
+          <ul class="owner-checklist">
+            <li>
+              <div>
+                <strong>Registrera er uteservering</strong>
+                <span style="display: block; color: var(--muted); font-size: 14px;">Bli synlig på kartan och gör det enkelt för gäster att hitta er.</span>
+              </div>
+            </li>
+            <li>
+              <div>
+                <strong>Specificera era soltimmar</strong>
+                <span style="display: block; color: var(--muted); font-size: 14px;">Låt gästerna veta exakt när ni har bäst solläge på dagen.</span>
+              </div>
+            </li>
+            <li>
+              <div>
+                <strong>Driv trafik till er uteservering</strong>
+                <span style="display: block; color: var(--muted); font-size: 14px;">SunMap fyller era platser genom att visa upp er när solen skiner som mest.</span>
+              </div>
+            </li>
+            <li>
+              <div>
+                <strong>Maximera exponeringen</strong>
+                <span style="display: block; color: var(--muted); font-size: 14px;">Välj sponsrad listning för att sticka ut och attrahera ännu fler besökare.</span>
+              </div>
+            </li>
+          </ul>
         </div>
       </div>
     </section>
@@ -263,7 +401,7 @@
   </main>
 
   <footer class="site" style="border-top: 1px solid var(--card-border); margin-top: 60px; padding: 30px 20px; text-align: center; color: var(--muted); font-size: 14px;">
-    <p>© <span id="year"></span> SunMap Tech. Skapad i Stockholm för en soligare stad.</p>
+    <p>© <span id="year"></span> SunMap Tech. Skapad för en soligare stad.</p>
   </footer>
 
   <script>
